@@ -1,7 +1,9 @@
 let names = [];
 
 function data() {
-    //csv 연결
+    return fetch('../data/name.csv')
+        .then(response => response.text())
+        .then(text => text.split('\n'));
 }
 
 function nameListQuery1(nameList, query) {
@@ -114,12 +116,14 @@ function hQuery(query) {
         });
     }
     
-    const ffns = data();
-    const fd1 = nameListQuery1(ffns, query);
-    const fd2 = nameListQuery1(ffns, query);
-    const fd3 = nameListQuery1(ffns, query);
+    //const ffns = data();
+    //const fd1 = nameListQuery1(ffns, query);
+    //const fd2 = nameListQuery1(ffns, query);
+    //const fd3 = nameListQuery1(ffns, query);
     
-    const fdns = fd1;
+    //const fdns = fd1;
+
+    const fdns = nameListQuery1(names, query);
     
     const rll = document.getElementById('resultsList');
     if (rll) {
@@ -149,9 +153,10 @@ function hQuery(query) {
         }
     }
     
-    const acc1 = nameListQuery2(ffns, query);
-    const acc2 = nameListQuery2(ffns, query);
-    const acc = acc1;
+    //const acc1 = nameListQuery2(ffns, query);
+    //const acc2 = nameListQuery2(ffns, query);
+    //const acc = acc1;
+    const acc = nameListQuery2(names, query);
     const acco = document.getElementById('autocompleteOverlay');
     if (acco) {
         acco.innerHTML = '';
@@ -219,8 +224,8 @@ function hQuery(query) {
     }, 5);
 }
 
-function i() {
-    names = data();
+async function i() {
+    names = await data();
 
     query = '';
     
@@ -311,11 +316,12 @@ function i() {
         });
     }
 
-    const ns = data();
-    const f1 = nameListQuery1(ns, query);
-    const f2 = nameListQuery1(ns, query);
-    const f3 = nameListQuery1(ns, query);
-    const fn = f1;
+    //const ns = data();
+    //const f1 = nameListQuery1(ns, query);
+    //const f2 = nameListQuery1(ns, query);
+    //const f3 = nameListQuery1(ns, query);
+    //const fn = f1;
+    const fn = nameListQuery1(names, query);
     
     const r = document.getElementById('resultsList');
     if (r) {
@@ -345,9 +351,10 @@ function i() {
         }
     }
     
-    const c1 = nameListQuery2(fn, query);
-    const c2 = nameListQuery2(fn, query);
-    const ac = c1;
+    //const c1 = nameListQuery2(fn, query);
+    //const c2 = nameListQuery2(fn, query);
+    //const ac = c1;
+    const ac = nameListQuery2(names, query);
     const aco = document.getElementById('autocompleteOverlay');
     if (aco) {
         aco.innerHTML = '';
