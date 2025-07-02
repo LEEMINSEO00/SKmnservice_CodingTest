@@ -1,9 +1,18 @@
 let names = [];
+let nameDetails = [];
 
 function data() {
     return fetch('../data/name.csv')
         .then(response => response.text())
         .then(text => text.split('\n'));
+}
+
+function loadDetails() {
+    return fetch('../API/dummy_detail.json')
+        .then(response => response.json())
+        .then(data => {
+            nameDetails = data;
+        });
 }
 
 function searchQuery(nameList, query) {
@@ -28,6 +37,26 @@ function autoComplete(nameList, query) {
     return match || null;
 }
 
+function showDetails(filtered, index) {
+    const detailDiv = document.getElementById('detailInfo');
+    if (!detailDiv) return;
+
+    const person = filtered [index];
+
+    if (!person) {
+        detailDiv.innerHTML = '<p>상세 정보를 찾을 수 없습니다.</p>';
+        return;
+    }
+
+    detailDiv.innerHTML = `
+        <div class="detail-card">
+            <strong>이름:</strong> ${person.name}<br>
+            <strong>생일:</strong> ${person.birth}<br>
+            <strong>전화번호:</strong> ${person.phone}
+        </div>
+    `;
+}
+
 function updateResults(query) {
     const filteredNames = searchQuery(names, query);
     const resultsList = document.getElementById('resultsList');
@@ -37,12 +66,21 @@ function updateResults(query) {
         if (filteredNames.length === 0) {
             resultsList.innerHTML = `<li class="no-results">${query.trim() ? '검색 결과가 없습니다' : '검색어를 입력해주세요'}</li>`;
         } else {
-            filteredNames.forEach((name) => {
+            const filteredPeople = nameDetails.filter(person =>
+                person.name.toLowerCase().includes(query.toLowerCase())
+            );
+
+            filteredPeople.forEach((person, index) => {
                 const resultItem = document.createElement('li');
-                resultItem.textContent = name;
+                resultItem.textContent = person.name;
                 resultItem.style.display = 'block';
                 resultItem.style.padding = '8px 12px';
                 resultItem.style.margin = '5px 0';
+
+                resultItem.addEventListener('click', () => {
+                    showDetails(filteredPeople, index);
+                });
+
                 resultsList.appendChild(resultItem);
             });
         }
@@ -70,6 +108,7 @@ function updateResults(query) {
 }
 
 async function i() {
+    await loadDetails();
     names = await data();
     
     const searchInput = document.getElementById('searchInput');
