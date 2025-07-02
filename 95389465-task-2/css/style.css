@@ -109,3 +109,35 @@ h1 {
     font-size: 14px;
     color: #1976d2;
 }
+
+
+.details-container {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-top: 30px;
+}
+
+.details-title {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+#detailInfo {
+    background: #f8f9fa;
+    border: none;
+    border-left: 3px solid #4CAF50;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+#detailInfo p {
+    color: #000;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
