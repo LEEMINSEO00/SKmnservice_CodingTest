@@ -60,6 +60,14 @@ function showDetails(filtered, index) {
 function updateResults(query) {
     const filteredNames = searchQuery(names, query);
     const resultsList = document.getElementById('resultsList');
+
+    if (!query.trim()) {
+            const detailDiv = document.getElementById('detailInfo');
+            if (detailDiv) {
+                detailDiv.innerHTML = '<p>이름 클릭 시 상세 정보가 표시됩니다.</p>';
+            }
+        }
+
     if (resultsList) {
         resultsList.innerHTML = '';
         
