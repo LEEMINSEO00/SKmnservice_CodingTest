@@ -58,6 +58,8 @@ function showDetails(filtered, index) {
 }
 
 function updateResults(query) {
+    console.log(`검색 실행: ${query}`);
+    
     const filteredNames = searchQuery(names, query);
     const resultsList = document.getElementById('resultsList');
 
@@ -121,8 +123,13 @@ async function i() {
     
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
+        let debounceTimeout;
+
         searchInput.addEventListener('input', (e) => {
-            updateResults(e.target.value);
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                updateResults(e.target.value);
+            }, 300);
         });
         
         searchInput.addEventListener('focus', () => {
