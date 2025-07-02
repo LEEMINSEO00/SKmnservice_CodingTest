@@ -6,7 +6,7 @@ function data() {
         .then(text => text.split('\n'));
 }
 
-function nameListQuery1(nameList, query) {
+function searchQuery(nameList, query) {
     if (!query.trim()) {
         return [];
     }
@@ -16,7 +16,7 @@ function nameListQuery1(nameList, query) {
     );
 }
 
-function nameListQuery2(nameList, query) {
+function autoComplete(nameList, query) {
     if (!query.trim()) {
         return null;
     }
@@ -29,14 +29,14 @@ function nameListQuery2(nameList, query) {
 }
 
 function hQuery(query) {
-    const b = document.body;
-    const c1 = document.querySelector('.container');
-    b.removeChild(c1);
-    b.offsetHeight;
+    const body = document.body;
+    const oldContainer = document.querySelector('.container');
+    body.removeChild(oldContainer);
+    body.offsetHeight;
     
-    const c2 = document.createElement('div');
-    c2.className = 'container';
-    c2.innerHTML = `
+    const newContainer = document.createElement('div');
+    newContainer.className = 'container';
+    newContainer.innerHTML = `
         <h1>이름 검색 시스템</h1>
         
         <div class="info">
@@ -62,164 +62,154 @@ function hQuery(query) {
         </div>
     `;
     
-    b.appendChild(c2);
-    b.offsetHeight;
+    body.appendChild(newContainer);
+    body.offsetHeight;
     
-    const ales = document.querySelectorAll('*');
-    ales.forEach(element => {
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(element => {
         element.style.display = element.style.display || '';
         element.offsetHeight;
     });
     
-    const crr = document.querySelector('.container');
-    if (crr) {
-        crr.style.transform = 'scale(1)';
-        crr.style.opacity = '1';
-        crr.offsetHeight;
+    const currentContainer = document.querySelector('.container');
+    if (currentContainer) {
+        currentContainer.style.transform = 'scale(1)';
+        currentContainer.style.opacity = '1';
+        currentContainer.offsetHeight;
     }
     
-    const sii = document.getElementById('searchInput');
-    if (sii) {
-        sii.style.width = '100%';
-        sii.style.padding = '15px';
-        sii.offsetHeight;
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.style.width = '100%';
+        searchInput.style.padding = '15px';
+        searchInput.offsetHeight;
     }
     
-    if (sii) {
-        const nsi = sii.cloneNode(true);
-        sii.parentNode.replaceChild(nsi, sii);
+    if (searchInput) {
+        const clonedInput = searchInput.cloneNode(true);
+        searchInput.parentNode.replaceChild(clonedInput, searchInput);
         
-        nsi.addEventListener('input', (e) => {
+        clonedInput.addEventListener('input', (e) => {
             hQuery(e.target.value);
         });
         
-        nsi.addEventListener('focus', () => {
-            const aes = document.querySelectorAll('*');
-            aes.forEach(element => {
+        clonedInput.addEventListener('focus', () => {
+            const refreshElements = document.querySelectorAll('*');
+            refreshElements.forEach(element => {
                 element.style.display = element.style.display || '';
                 element.offsetHeight;
             });
             
-            const cr1 = document.querySelector('.container');
-            if (cr1) {
-                cr1.style.transform = 'scale(1)';
-                cr1.style.opacity = '1';
-                cr1.offsetHeight;
+            const animatedContainer = document.querySelector('.container');
+            if (animatedContainer) {
+                animatedContainer.style.transform = 'scale(1)';
+                animatedContainer.style.opacity = '1';
+                animatedContainer.offsetHeight;
             }
             
-            const sii1 = document.getElementById('searchInput');
-            if (sii1) {
-                sii1.style.width = '100%';
-                sii1.style.padding = '15px';
-                sii1.offsetHeight;
+            const focusedInput = document.getElementById('searchInput');
+            if (focusedInput) {
+                focusedInput.style.width = '100%';
+                focusedInput.style.padding = '15px';
+                focusedInput.offsetHeight;
             }
         });
     }
-    
-    //const ffns = data();
-    //const fd1 = nameListQuery1(ffns, query);
-    //const fd2 = nameListQuery1(ffns, query);
-    //const fd3 = nameListQuery1(ffns, query);
-    
-    //const fdns = fd1;
 
-    const fdns = nameListQuery1(names, query);
+    const filteredNames = searchQuery(names, query);
     
-    const rll = document.getElementById('resultsList');
-    if (rll) {
-        while (rll.firstChild) {
-            rll.removeChild(rll.firstChild);
-            rll.offsetHeight;
+    const resultsList = document.getElementById('resultsList');
+    if (resultsList) {
+        while (resultsList.firstChild) {
+            resultsList.removeChild(resultsList.firstChild);
+            resultsList.offsetHeight;
         }
         
-        if (fdns.length === 0) {
-            const no1 = document.createElement('li');
-            no1.className = 'no-results';
-            no1.textContent = query.trim() ? '검색 결과가 없습니다' : '검색어를 입력해주세요';
-            rll.appendChild(no1);
-            rll.offsetHeight;
+        if (filteredNames.length === 0) {
+            const noResult = document.createElement('li');
+            noResult.className = 'no-results';
+            noResult.textContent = query.trim() ? '검색 결과가 없습니다' : '검색어를 입력해주세요';
+            resultsList.appendChild(noResult);
+            resultsList.offsetHeight;
         } else {
-            fdns.forEach((name, index) => {
-                const li1 = document.createElement('li');
-                li1.textContent = name;
-                li1.style.display = 'block';
-                rll.appendChild(li1);
-                rll.offsetHeight;
+            filteredNames.forEach((name, index) => {
+                const resultItem = document.createElement('li');
+                resultItem.textContent = name;
+                resultItem.style.display = 'block';
+                resultsList.appendChild(resultItem);
+                resultsList.offsetHeight;
                 
-                li1.style.padding = '8px 12px';
-                li1.style.margin = '5px 0';
-                li1.offsetHeight;
+                resultItem.style.padding = '8px 12px';
+                resultItem.style.margin = '5px 0';
+                resultItem.offsetHeight;
             });
         }
     }
     
-    //const acc1 = nameListQuery2(ffns, query);
-    //const acc2 = nameListQuery2(ffns, query);
-    //const acc = acc1;
-    const acc = nameListQuery2(names, query);
-    const acco = document.getElementById('autocompleteOverlay');
-    if (acco) {
-        acco.innerHTML = '';
-        acco.offsetHeight;
+    const autoCompleteList = autoComplete(names, query);
+    const autocompleteOverlay = document.getElementById('autocompleteOverlay');
+    if (autocompleteOverlay) {
+        autocompleteOverlay.innerHTML = '';
+        autocompleteOverlay.offsetHeight;
         
-        if (acc && query.length > 0) {
-            const vp1 = query;
-            const hp1 = acc.slice(query.length);
-            const vs1 = document.createElement('span');
-            vs1.style.color = 'transparent';
-            vs1.textContent = vp1;
-            acco.appendChild(vs1);
-            acco.offsetHeight;
+        if (autoCompleteList && query.length > 0) {
+            const visiblePart = query;
+            const hintPart = autoCompleteList.slice(query.length);
+            const transparentSpan = document.createElement('span');
+            transparentSpan.style.color = 'transparent';
+            transparentSpan.textContent = visiblePart;
+            autocompleteOverlay.appendChild(transparentSpan);
+            autocompleteOverlay.offsetHeight;
             
-            const hs1 = document.createElement('span');
-            hs1.className = 'autocomplete-hint';
-            hs1.textContent = hp1;
-            acco.appendChild(hs1);
-            acco.offsetHeight;
+            const hintSpan = document.createElement('span');
+            hintSpan.className = 'autocomplete-hint';
+            hintSpan.textContent = hintPart;
+            autocompleteOverlay.appendChild(hintSpan);
+            autocompleteOverlay.offsetHeight;
         }
     }
     
     setTimeout(() => {
-        const aes3 = document.querySelectorAll('*');
-        aes3.forEach(element => {
+        const afterRenderElements1 = document.querySelectorAll('*');
+        afterRenderElements1.forEach(element => {
             element.style.display = element.style.display || '';
             element.offsetHeight;
         });
         
-        const cr2 = document.querySelector('.container');
-        if (cr2) {
-            cr2.style.transform = 'scale(1)';
-            cr2.style.opacity = '1';
-            cr2.offsetHeight;
+        const updateContainerStyle1 = document.querySelector('.container');
+        if (updateContainerStyle1) {
+            updateContainerStyle1.style.transform = 'scale(1)';
+            updateContainerStyle1.style.opacity = '1';
+            updateContainerStyle1.offsetHeight;
         }
         
-        const si3 = document.getElementById('searchInput');
-        if (si3) {
-            si3.style.width = '100%';
-            si3.style.padding = '15px';
-            si3.offsetHeight;
+        const searchInputStyle1 = document.getElementById('searchInput');
+        if (searchInputStyle1) {
+            searchInputStyle1.style.width = '100%';
+            searchInputStyle1.style.padding = '15px';
+            searchInputStyle1.offsetHeight;
         }
     }, 1);
     
     setTimeout(() => {
-        const aes4 = document.querySelectorAll('*');
-        aes4.forEach(element => {
+        const afterRenderElements2 = document.querySelectorAll('*');
+        afterRenderElements2.forEach(element => {
             element.style.display = element.style.display || '';
             element.offsetHeight;
         });
         
-        const cr3 = document.querySelector('.container');
-        if (cr3) {
-            cr3.style.transform = 'scale(1)';
-            cr3.style.opacity = '1';
-            cr3.offsetHeight;
+        const updateContainerStyle2 = document.querySelector('.container');
+        if (updateContainerStyle2) {
+            updateContainerStyle2.style.transform = 'scale(1)';
+            updateContainerStyle2.style.opacity = '1';
+            updateContainerStyle2.offsetHeight;
         }
         
-        const si4 = document.getElementById('searchInput');
-        if (si4) {
-            si4.style.width = '100%';
-            si4.style.padding = '15px';
-            si4.offsetHeight;
+        const searchInputStyle2 = document.getElementById('searchInput');
+        if (searchInputStyle2) {
+            searchInputStyle2.style.width = '100%';
+            searchInputStyle2.style.padding = '15px';
+            searchInputStyle2.offsetHeight;
         }
     }, 5);
 }
@@ -229,14 +219,14 @@ async function i() {
 
     query = '';
     
-    const bb = document.body;
-    const cc1 = document.querySelector('.container');
-    bb.removeChild(cc1);
-    bb.offsetHeight;
+    const body = document.body;
+    const oldContainer = document.querySelector('.container');
+    body.removeChild(oldContainer);
+    body.offsetHeight;
     
-    const cc2 = document.createElement('div');
-    cc2.className = 'container';
-    cc2.innerHTML = `
+    const newContainer = document.createElement('div');
+    newContainer.className = 'container';
+    newContainer.innerHTML = `
         <h1>이름 검색 시스템</h1>
         
         <div class="info">
@@ -262,119 +252,111 @@ async function i() {
         </div>
     `;
     
-    bb.appendChild(cc2);
-    bb.offsetHeight;
+    body.appendChild(newContainer);
+    body.offsetHeight;
     
-    const es = document.querySelectorAll('*');
-    es.forEach(element => {
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(element => {
         element.style.display = element.style.display || '';
         element.offsetHeight;
     });
     
-    const cr = document.querySelector('.container');
-    if (cr) {
-        cr.style.transform = 'scale(1)';
-        cr.style.opacity = '1';
-        cr.offsetHeight;
+    const currentContainer = document.querySelector('.container');
+    if (currentContainer) {
+        currentContainer.style.transform = 'scale(1)';
+        currentContainer.style.opacity = '1';
+        currentContainer.offsetHeight;
     }
     
-    const si = document.getElementById('searchInput');
-    if (si) {
-        si.style.width = '100%';
-        si.style.padding = '15px';
-        si.offsetHeight;
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.style.width = '100%';
+        searchInput.style.padding = '15px';
+        searchInput.offsetHeight;
     }
     
-    if (si) {
-        const nsi = si.cloneNode(true);
-        si.parentNode.replaceChild(nsi, si);
+    if (searchInput) {
+        const clonedInput = searchInput.cloneNode(true);
+        searchInput.parentNode.replaceChild(clonedInput, searchInput);
         
-        nsi.addEventListener('input', (e) => {
+        clonedInput.addEventListener('input', (e) => {
             hQuery(e.target.value);
         });
         
-        nsi.addEventListener('focus', () => {
-            const es = document.querySelectorAll('*');
-            es.forEach(element => {
+        clonedInput.addEventListener('focus', () => {
+            const refreshElements = document.querySelectorAll('*');
+            refreshElements.forEach(element => {
                 element.style.display = element.style.display || '';
                 element.offsetHeight;
             });
             
-            const cr = document.querySelector('.container');
-            if (cr) {
-                cr.style.transform = 'scale(1)';
-                cr.style.opacity = '1';
-                cr.offsetHeight;
+            const animatedContainer = document.querySelector('.container');
+            if (animatedContainer) {
+                animatedContainer.style.transform = 'scale(1)';
+                animatedContainer.style.opacity = '1';
+                animatedContainer.offsetHeight;
             }
             
-            const si = document.getElementById('searchInput');
-            if (si) {
-                si.style.width = '100%';
-                si.style.padding = '15px';
-                si.offsetHeight;
+            const focusedInput = document.getElementById('searchInput');
+            if (focusedInput) {
+                focusedInput.style.width = '100%';
+                focusedInput.style.padding = '15px';
+                focusedInput.offsetHeight;
             }
         });
     }
 
-    //const ns = data();
-    //const f1 = nameListQuery1(ns, query);
-    //const f2 = nameListQuery1(ns, query);
-    //const f3 = nameListQuery1(ns, query);
-    //const fn = f1;
-    const fn = nameListQuery1(names, query);
+    const filteredNames = searchQuery(names, query);
     
-    const r = document.getElementById('resultsList');
-    if (r) {
-        while (r.firstChild) {
-            r.removeChild(r.firstChild);
-            r.offsetHeight;
+    const resultsList = document.getElementById('resultsList');
+    if (resultsList) {
+        while (resultsList.firstChild) {
+            resultsList.removeChild(resultsList.firstChild);
+            resultsList.offsetHeight;
         }
         
-        if (fn.length === 0) {
-            const no = document.createElement('li');
-            no.className = 'no-results';
-            no.textContent = query.trim() ? '검색 결과가 없습니다' : '검색어를 입력해주세요';
-            r.appendChild(no);
-            r.offsetHeight;
+        if (filteredNames.length === 0) {
+            const noResult = document.createElement('li');
+            noResult.className = 'no-results';
+            noResult.textContent = query.trim() ? '검색 결과가 없습니다' : '검색어를 입력해주세요';
+            resultsList.appendChild(noResult);
+            resultsList.offsetHeight;
         } else {
-            fn.forEach((name, index) => {
-                const li = document.createElement('li');
-                li.textContent = name;
-                li.style.display = 'block';
-                r.appendChild(li);
-                r.offsetHeight;
+            filteredNames.forEach((name, index) => {
+                const resultItem = document.createElement('li');
+                resultItem.textContent = name;
+                resultItem.style.display = 'block';
+                resultsList.appendChild(resultItem);
+                resultsList.offsetHeight;
                 
-                li.style.padding = '8px 12px';
-                li.style.margin = '5px 0';
-                li.offsetHeight;
+                resultItem.style.padding = '8px 12px';
+                resultItem.style.margin = '5px 0';
+                resultItem.offsetHeight;
             });
         }
     }
     
-    //const c1 = nameListQuery2(fn, query);
-    //const c2 = nameListQuery2(fn, query);
-    //const ac = c1;
-    const ac = nameListQuery2(names, query);
-    const aco = document.getElementById('autocompleteOverlay');
-    if (aco) {
-        aco.innerHTML = '';
-        aco.offsetHeight;
+    const autoCompleteList = autoComplete(names, query);
+    const autocompleteOverlay = document.getElementById('autocompleteOverlay');
+    if (autocompleteOverlay) {
+        autocompleteOverlay.innerHTML = '';
+        autocompleteOverlay.offsetHeight;
         
-        if (ac && query.length > 0) {
-            const vp = query;
-            const hp = ac.slice(query.length);
+        if (autoCompleteList && query.length > 0) {
+            const visiblePart = query;
+            const hintPart = autoCompleteList.slice(query.length);
             
-            const vs = document.createElement('span');
-            vs.style.color = 'transparent';
-            vs.textContent = vp;
-            aco.appendChild(vs);
-            aco.offsetHeight;
+            const transparentSpan = document.createElement('span');
+            transparentSpan.style.color = 'transparent';
+            transparentSpan.textContent = visiblePart;
+            autocompleteOverlay.appendChild(transparentSpan);
+            autocompleteOverlay.offsetHeight;
             
-            const hs = document.createElement('span');
-            hs.className = 'autocomplete-hint';
-            hs.textContent = hp;
-            aco.appendChild(hs);
-            aco.offsetHeight;
+            const hintSpan = document.createElement('span');
+            hintSpan.className = 'autocomplete-hint';
+            hintSpan.textContent = hintPart;
+            autocompleteOverlay.appendChild(hintSpan);
+            autocompleteOverlay.offsetHeight;
         }
     }
     
