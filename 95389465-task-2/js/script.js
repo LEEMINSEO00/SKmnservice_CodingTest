@@ -28,120 +28,22 @@ function autoComplete(nameList, query) {
     return match || null;
 }
 
-function hQuery(query) {
-    const body = document.body;
-    const oldContainer = document.querySelector('.container');
-    body.removeChild(oldContainer);
-    body.offsetHeight;
-    
-    const newContainer = document.createElement('div');
-    newContainer.className = 'container';
-    newContainer.innerHTML = `
-        <h1>이름 검색 시스템</h1>
-        
-        <div class="info">
-            💡 이름을 입력하면 자동완성과 관련 결과를 확인할 수 있습니다.
-        </div>
-
-        <div class="search-container">
-            <div id="autocompleteOverlay" class="autocomplete-overlay"></div>
-            <input 
-                type="text" 
-                id="searchInput" 
-                placeholder="이름을 입력하세요..."
-                autocomplete="off"
-                value="${query}"
-            >
-        </div>
-
-        <div class="results-container">
-            <div class="results-title">검색 결과:</div>
-            <ul id="resultsList" class="results-list">
-                <li class="no-results">검색어를 입력해주세요</li>
-            </ul>
-        </div>
-    `;
-    
-    body.appendChild(newContainer);
-    body.offsetHeight;
-    
-    const allElements = document.querySelectorAll('*');
-    allElements.forEach(element => {
-        element.style.display = element.style.display || '';
-        element.offsetHeight;
-    });
-    
-    const currentContainer = document.querySelector('.container');
-    if (currentContainer) {
-        currentContainer.style.transform = 'scale(1)';
-        currentContainer.style.opacity = '1';
-        currentContainer.offsetHeight;
-    }
-    
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.style.width = '100%';
-        searchInput.style.padding = '15px';
-        searchInput.offsetHeight;
-    }
-    
-    if (searchInput) {
-        const clonedInput = searchInput.cloneNode(true);
-        searchInput.parentNode.replaceChild(clonedInput, searchInput);
-        
-        clonedInput.addEventListener('input', (e) => {
-            hQuery(e.target.value);
-        });
-        
-        clonedInput.addEventListener('focus', () => {
-            const refreshElements = document.querySelectorAll('*');
-            refreshElements.forEach(element => {
-                element.style.display = element.style.display || '';
-                element.offsetHeight;
-            });
-            
-            const animatedContainer = document.querySelector('.container');
-            if (animatedContainer) {
-                animatedContainer.style.transform = 'scale(1)';
-                animatedContainer.style.opacity = '1';
-                animatedContainer.offsetHeight;
-            }
-            
-            const focusedInput = document.getElementById('searchInput');
-            if (focusedInput) {
-                focusedInput.style.width = '100%';
-                focusedInput.style.padding = '15px';
-                focusedInput.offsetHeight;
-            }
-        });
-    }
-
+function updateResults(query) {
     const filteredNames = searchQuery(names, query);
-    
     const resultsList = document.getElementById('resultsList');
     if (resultsList) {
-        while (resultsList.firstChild) {
-            resultsList.removeChild(resultsList.firstChild);
-            resultsList.offsetHeight;
-        }
+        resultsList.innerHTML = '';
         
         if (filteredNames.length === 0) {
-            const noResult = document.createElement('li');
-            noResult.className = 'no-results';
-            noResult.textContent = query.trim() ? '검색 결과가 없습니다' : '검색어를 입력해주세요';
-            resultsList.appendChild(noResult);
-            resultsList.offsetHeight;
+            resultsList.innerHTML = `<li class="no-results">${query.trim() ? '검색 결과가 없습니다' : '검색어를 입력해주세요'}</li>`;
         } else {
-            filteredNames.forEach((name, index) => {
+            filteredNames.forEach((name) => {
                 const resultItem = document.createElement('li');
                 resultItem.textContent = name;
                 resultItem.style.display = 'block';
-                resultsList.appendChild(resultItem);
-                resultsList.offsetHeight;
-                
                 resultItem.style.padding = '8px 12px';
                 resultItem.style.margin = '5px 0';
-                resultItem.offsetHeight;
+                resultsList.appendChild(resultItem);
             });
         }
     }
@@ -150,7 +52,6 @@ function hQuery(query) {
     const autocompleteOverlay = document.getElementById('autocompleteOverlay');
     if (autocompleteOverlay) {
         autocompleteOverlay.innerHTML = '';
-        autocompleteOverlay.offsetHeight;
         
         if (autoCompleteList && query.length > 0) {
             const visiblePart = query;
@@ -159,59 +60,13 @@ function hQuery(query) {
             transparentSpan.style.color = 'transparent';
             transparentSpan.textContent = visiblePart;
             autocompleteOverlay.appendChild(transparentSpan);
-            autocompleteOverlay.offsetHeight;
             
             const hintSpan = document.createElement('span');
             hintSpan.className = 'autocomplete-hint';
             hintSpan.textContent = hintPart;
             autocompleteOverlay.appendChild(hintSpan);
-            autocompleteOverlay.offsetHeight;
         }
     }
-    
-    setTimeout(() => {
-        const afterRenderElements1 = document.querySelectorAll('*');
-        afterRenderElements1.forEach(element => {
-            element.style.display = element.style.display || '';
-            element.offsetHeight;
-        });
-        
-        const updateContainerStyle1 = document.querySelector('.container');
-        if (updateContainerStyle1) {
-            updateContainerStyle1.style.transform = 'scale(1)';
-            updateContainerStyle1.style.opacity = '1';
-            updateContainerStyle1.offsetHeight;
-        }
-        
-        const searchInputStyle1 = document.getElementById('searchInput');
-        if (searchInputStyle1) {
-            searchInputStyle1.style.width = '100%';
-            searchInputStyle1.style.padding = '15px';
-            searchInputStyle1.offsetHeight;
-        }
-    }, 1);
-    
-    setTimeout(() => {
-        const afterRenderElements2 = document.querySelectorAll('*');
-        afterRenderElements2.forEach(element => {
-            element.style.display = element.style.display || '';
-            element.offsetHeight;
-        });
-        
-        const updateContainerStyle2 = document.querySelector('.container');
-        if (updateContainerStyle2) {
-            updateContainerStyle2.style.transform = 'scale(1)';
-            updateContainerStyle2.style.opacity = '1';
-            updateContainerStyle2.offsetHeight;
-        }
-        
-        const searchInputStyle2 = document.getElementById('searchInput');
-        if (searchInputStyle2) {
-            searchInputStyle2.style.width = '100%';
-            searchInputStyle2.style.padding = '15px';
-            searchInputStyle2.offsetHeight;
-        }
-    }, 5);
 }
 
 async function i() {
