@@ -1,6 +1,8 @@
 package com.example.kot
 
-import com.example.a95389465_task_1.loadNodesAndWays
+import com.example.kot.loadNodesAndWays
+import com.example.kot.GPSPoint
+import com.example.kot.loadGPSPoints
 import java.io.File
 
 fun main() {

@@ -1,4 +1,4 @@
-package com.example.a95389465_task_1
+package com.example.kot
 
 import java.io.File
 
